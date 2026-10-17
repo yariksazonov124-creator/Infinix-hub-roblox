@@ -1,5 +1,6 @@
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
@@ -13,8 +14,8 @@ ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = PlayerGui
 
 local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 350, 0, 250)
-MainFrame.Position = UDim2.new(0.5, -175, 0.5, -125)
+MainFrame.Size = UDim2.new(0, 350, 0, 290)
+MainFrame.Position = UDim2.new(0.5, -175, 0.5, -145)
 MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 MainFrame.BackgroundTransparency = 1
 MainFrame.BorderSizePixel = 0
@@ -24,7 +25,7 @@ local UICorner = Instance.new("UICorner")
 UICorner.CornerRadius = UDim.new(0, 16)
 UICorner.Parent = MainFrame
 
-local UIStroke = Instance.New("UIStroke")
+local UIStroke = Instance.new("UIStroke")
 UIStroke.Color = Color3.fromRGB(255, 0, 0)
 UIStroke.Thickness = 2
 UIStroke.Transparency = 1
@@ -73,7 +74,7 @@ TextCorner.Parent = TextBox
 
 local PlayButton = Instance.new("TextButton")
 PlayButton.Size = UDim2.new(0, 90, 0, 45)
-PlayButton.Position = UDim2.new(0.5, -140, 0, 120)
+PlayButton.Position = UDim2.new(0.5, -140, 0, 115)
 PlayButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 PlayButton.BackgroundTransparency = 1
 PlayButton.Text = "▶"
@@ -89,7 +90,7 @@ PlayCorner.Parent = PlayButton
 
 local PauseButton = Instance.new("TextButton")
 PauseButton.Size = UDim2.new(0, 90, 0, 45)
-PauseButton.Position = UDim2.new(0.5, -45, 0, 120)
+PauseButton.Position = UDim2.new(0.5, -45, 0, 115)
 PauseButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 PauseButton.BackgroundTransparency = 1
 PauseButton.Text = "⏸"
@@ -105,7 +106,7 @@ PauseCorner.Parent = PauseButton
 
 local StopButton = Instance.new("TextButton")
 StopButton.Size = UDim2.new(0, 90, 0, 45)
-StopButton.Position = UDim2.new(0.5, 50, 0, 120)
+StopButton.Position = UDim2.new(0.5, 50, 0, 115)
 StopButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 StopButton.BackgroundTransparency = 1
 StopButton.Text = "■"
@@ -119,9 +120,45 @@ local StopCorner = Instance.new("UICorner")
 StopCorner.CornerRadius = UDim.new(0, 12)
 StopCorner.Parent = StopButton
 
+local SliderFrame = Instance.new("Frame")
+SliderFrame.Size = UDim2.new(0, 200, 0, 6)
+SliderFrame.Position = UDim2.new(0.5, -60, 0, 185)
+SliderFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+SliderFrame.BackgroundTransparency = 1
+SliderFrame.BorderSizePixel = 0
+SliderFrame.Parent = MainFrame
+
+local SliderCorner = Instance.new("UICorner")
+SliderCorner.CornerRadius = UDim.new(0, 3)
+SliderCorner.Parent = SliderFrame
+
+local SliderButton = Instance.new("TextButton")
+SliderButton.Size = UDim2.new(0, 16, 0, 16)
+SliderButton.Position = UDim2.new(0.5, -8, 0.5, -8)
+SliderButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+SliderButton.BackgroundTransparency = 1
+SliderButton.Text = ""
+SliderButton.Parent = SliderFrame
+
+local SliderBtnCorner = Instance.new("UICorner")
+SliderBtnCorner.CornerRadius = UDim.new(1, 0)
+SliderBtnCorner.Parent = SliderButton
+
+local VolumeLabel = Instance.new("TextLabel")
+VolumeLabel.Size = UDim2.new(0, 80, 0, 20)
+VolumeLabel.Position = UDim2.new(0.5, -145, 0, 178)
+VolumeLabel.BackgroundTransparency = 1
+VolumeLabel.Text = "Vol: 50%"
+VolumeLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+VolumeLabel.TextSize = 14
+VolumeLabel.Font = Enum.Font.SourceSansBold
+VolumeLabel.TextXAlignment = Enum.TextXAlignment.Left
+VolumeLabel.TextTransparency = 1
+VolumeLabel.Parent = MainFrame
+
 local StatusLabel = Instance.new("TextLabel")
 StatusLabel.Size = UDim2.new(1, 0, 0, 30)
-StatusLabel.Position = UDim2.new(0, 0, 0, 185)
+StatusLabel.Position = UDim2.new(0, 0, 0, 220)
 StatusLabel.BackgroundTransparency = 1
 StatusLabel.Text = "Status: Idle"
 StatusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
@@ -161,6 +198,8 @@ OpenStroke.Color = Color3.fromRGB(255, 0, 0)
 OpenStroke.Thickness = 2
 OpenStroke.Parent = OpenButton
 
+local currentVolume = 0.5
+
 local function fadeIn()
     local tweenInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
     TweenService:Create(MainFrame, tweenInfo, {BackgroundTransparency = 0}):Play()
@@ -171,6 +210,9 @@ local function fadeIn()
     TweenService:Create(PlayButton, tweenInfo, {BackgroundTransparency = 0, TextTransparency = 0}):Play()
     TweenService:Create(PauseButton, tweenInfo, {BackgroundTransparency = 0, TextTransparency = 0}):Play()
     TweenService:Create(StopButton, tweenInfo, {BackgroundTransparency = 0, TextTransparency = 0}):Play()
+    TweenService:Create(SliderFrame, tweenInfo, {BackgroundTransparency = 0}):Play()
+    TweenService:Create(SliderButton, tweenInfo, {BackgroundTransparency = 0}):Play()
+    TweenService:Create(VolumeLabel, tweenInfo, {TextTransparency = 0}):Play()
     TweenService:Create(StatusLabel, tweenInfo, {TextTransparency = 0}):Play()
     TweenService:Create(Credits, tweenInfo, {TextTransparency = 0}):Play()
 end
@@ -198,15 +240,20 @@ PlayButton.MouseButton1Click:Connect(function()
             end
         else
             if currentSound then
+                currentSound:Stop() -- Исправлено: Гарантированно глушим старый звук перед удалением
                 currentSound:Destroy()
             end
             
             currentID = audioID
-            currentSound = Instance.new("Sound")
-            currentSound.SoundId = "rbxassetid://" .. audioID
-            currentSound.Volume = 1
-            currentSound.Looped = true
-            currentSound.Parent = workspace
+            
+            -- Исправлено: Свойства настраиваются ДО указания Parent для оптимизации движка Roblox
+            local sound = Instance.new("Sound")
+            sound.SoundId = "rbxassetid://" .. audioID
+            sound.Volume = currentVolume
+            sound.Looped = true
+            sound.Parent = workspace
+            
+            currentSound = sound
             currentSound:Play()
             
             StatusLabel.Text = "Status: Playing ID " .. audioID
@@ -224,47 +271,3 @@ PauseButton.MouseButton1Click:Connect(function()
         StatusLabel.Text = "Status: Paused"
         StatusLabel.TextColor3 = Color3.fromRGB(255, 200, 0)
     end
-end)
-
-StopButton.MouseButton1Click:Connect(function()
-    if currentSound then
-        currentSound:Destroy()
-        currentSound = nil
-        currentID = nil
-        StatusLabel.Text = "Status: Stopped"
-        StatusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
-    else
-        StatusLabel.Text = "Status: No active music"
-        StatusLabel.TextColor3 = Color3.fromRGB(255, 165, 0)
-    end
-end)
-
-CloseButton.MouseButton1Click:Connect(function()
-    local closeTweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.In)
-    
-    TweenService:Create(MainFrame, closeTweenInfo, {BackgroundTransparency = 1}):Play()
-    TweenService:Create(UIStroke, closeTweenInfo, {Transparency = 1}):Play()
-    TweenService:Create(Title, closeTweenInfo, {TextTransparency = 1}):Play()
-    TweenService:Create(CloseButton, closeTweenInfo, {TextTransparency = 1}):Play()
-    TweenService:Create(TextBox, closeTweenInfo, {BackgroundTransparency = 1, TextTransparency = 1}):Play()
-    TweenService:Create(PlayButton, closeTweenInfo, {BackgroundTransparency = 1, TextTransparency = 1}):Play()
-    TweenService:Create(PauseButton, closeTweenInfo, {BackgroundTransparency = 1, TextTransparency = 1}):Play()
-    TweenService:Create(StopButton, closeTweenInfo, {BackgroundTransparency = 1, TextTransparency = 1}):Play()
-    TweenService:Create(StatusLabel, closeTweenInfo, {TextTransparency = 1}):Play()
-    local lastTween = TweenService:Create(Credits, closeTweenInfo, {TextTransparency = 1})
-    
-    lastTween:Play()
-    lastTween.Completed:Connect(function()
-        MainFrame.Visible = false
-        OpenButton.Visible = true
-    end)
-end)
-
-OpenButton.MouseButton1Click:Connect(function()
-    OpenButton.Visible = false
-    MainFrame.Visible = true
-    fadeIn()
-end)
-
-local UserInputService = game:GetService("UserInputService")
-local dragging, dragInput, dragStart, startPos
