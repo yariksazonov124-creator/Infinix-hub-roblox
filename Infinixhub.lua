@@ -1,273 +1,84 @@
-local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
-local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
-
-if PlayerGui:FindFirstChild("InfinixHub") then
-    PlayerGui.InfinixHub:Destroy()
-end
-
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "InfinixHub"
-ScreenGui.ResetOnSpawn = false
-ScreenGui.Parent = PlayerGui
-
-local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 350, 0, 290)
-MainFrame.Position = UDim2.new(0.5, -175, 0.5, -145)
-MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-MainFrame.BackgroundTransparency = 1
-MainFrame.BorderSizePixel = 0
-MainFrame.Parent = ScreenGui
-
-local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = UDim.new(0, 16)
-UICorner.Parent = MainFrame
-
-local UIStroke = Instance.new("UIStroke")
-UIStroke.Color = Color3.fromRGB(255, 0, 0)
-UIStroke.Thickness = 2
-UIStroke.Transparency = 1
-UIStroke.Parent = MainFrame
-
-local Title = Instance.new("TextLabel")
-Title.Size = UDim2.new(1, -50, 0, 40)
-Title.Position = UDim2.new(0, 15, 0, 0)
-Title.BackgroundTransparency = 1
-Title.Text = "Infinix Hub - Music Player"
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextSize = 20
-Title.Font = Enum.Font.SourceSansBold
-Title.TextXAlignment = Enum.TextXAlignment.Left
-Title.TextTransparency = 1
-Title.Parent = MainFrame
-
-local CloseButton = Instance.new("TextButton")
-CloseButton.Size = UDim2.new(0, 35, 0, 35)
-CloseButton.Position = UDim2.new(1, -40, 0, 5)
-CloseButton.BackgroundTransparency = 1
-CloseButton.Text = "✕"
-CloseButton.TextColor3 = Color3.fromRGB(255, 75, 75)
-CloseButton.TextSize = 22
-CloseButton.Font = Enum.Font.SourceSansBold
-CloseButton.TextTransparency = 1
-CloseButton.Parent = MainFrame
-
-local TextBox = Instance.new("TextBox")
-TextBox.Size = UDim2.new(0, 280, 0, 40)
-TextBox.Position = UDim2.new(0.5, -140, 0, 60)
-TextBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-TextBox.BackgroundTransparency = 1
-TextBox.PlaceholderText = "Enter Audio ID or URL here..."
-TextBox.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
-TextBox.Text = ""
-TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-TextBox.TextSize = 16
-TextBox.Font = Enum.Font.SourceSans
-TextBox.TextTransparency = 1
-TextBox.Parent = MainFrame
-
-local TextCorner = Instance.new("UICorner")
-TextCorner.CornerRadius = UDim.new(0, 8)
-TextCorner.Parent = TextBox
-
-local PlayButton = Instance.new("TextButton")
-PlayButton.Size = UDim2.new(0, 90, 0, 45)
-PlayButton.Position = UDim2.new(0.5, -140, 0, 115)
-PlayButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-PlayButton.BackgroundTransparency = 1
-PlayButton.Text = "▶"
-PlayButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-PlayButton.TextSize = 24
-PlayButton.Font = Enum.Font.SourceSansBold
-PlayButton.TextTransparency = 1
-PlayButton.Parent = MainFrame
-
-local PlayCorner = Instance.new("UICorner")
-PlayCorner.CornerRadius = UDim.new(0, 12)
-PlayCorner.Parent = PlayButton
-
-local PauseButton = Instance.new("TextButton")
-PauseButton.Size = UDim2.new(0, 90, 0, 45)
-PauseButton.Position = UDim2.new(0.5, -45, 0, 115)
-PauseButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-PauseButton.BackgroundTransparency = 1
-PauseButton.Text = "⏸"
-PauseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-PauseButton.TextSize = 20
-PauseButton.Font = Enum.Font.SourceSansBold
-PauseButton.TextTransparency = 1
-PauseButton.Parent = MainFrame
-
-local PauseCorner = Instance.new("UICorner")
-PauseCorner.CornerRadius = UDim.new(0, 12)
-PauseCorner.Parent = PauseButton
-
-local StopButton = Instance.new("TextButton")
-StopButton.Size = UDim2.new(0, 90, 0, 45)
-StopButton.Position = UDim2.new(0.5, 50, 0, 115)
-StopButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-StopButton.BackgroundTransparency = 1
-StopButton.Text = "■"
-StopButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-StopButton.TextSize = 24
-StopButton.Font = Enum.Font.SourceSansBold
-StopButton.TextTransparency = 1
-StopButton.Parent = MainFrame
-
-local StopCorner = Instance.new("UICorner")
-StopCorner.CornerRadius = UDim.new(0, 12)
-StopCorner.Parent = StopButton
-
-local SliderFrame = Instance.new("Frame")
-SliderFrame.Size = UDim2.new(0, 200, 0, 6)
-SliderFrame.Position = UDim2.new(0.5, -60, 0, 185)
-SliderFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-SliderFrame.BackgroundTransparency = 1
-SliderFrame.BorderSizePixel = 0
-SliderFrame.Parent = MainFrame
-
-local SliderCorner = Instance.new("UICorner")
-SliderCorner.CornerRadius = UDim.new(0, 3)
-SliderCorner.Parent = SliderFrame
-
-local SliderButton = Instance.new("TextButton")
-SliderButton.Size = UDim2.new(0, 16, 0, 16)
-SliderButton.Position = UDim2.new(0.5, -8, 0.5, -8)
-SliderButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-SliderButton.BackgroundTransparency = 1
-SliderButton.Text = ""
-SliderButton.Parent = SliderFrame
-
-local SliderBtnCorner = Instance.new("UICorner")
-SliderBtnCorner.CornerRadius = UDim.new(1, 0)
-SliderBtnCorner.Parent = SliderButton
-
-local VolumeLabel = Instance.new("TextLabel")
-VolumeLabel.Size = UDim2.new(0, 80, 0, 20)
-VolumeLabel.Position = UDim2.new(0.5, -145, 0, 178)
-VolumeLabel.BackgroundTransparency = 1
-VolumeLabel.Text = "Vol: 50%"
-VolumeLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-VolumeLabel.TextSize = 14
-VolumeLabel.Font = Enum.Font.SourceSansBold
-VolumeLabel.TextXAlignment = Enum.TextXAlignment.Left
-VolumeLabel.TextTransparency = 1
-VolumeLabel.Parent = MainFrame
-
-local StatusLabel = Instance.new("TextLabel")
-StatusLabel.Size = UDim2.new(1, 0, 0, 30)
-StatusLabel.Position = UDim2.new(0, 0, 0, 220)
-StatusLabel.BackgroundTransparency = 1
-StatusLabel.Text = "Status: Idle"
-StatusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
-StatusLabel.TextSize = 16
-StatusLabel.Font = Enum.Font.SourceSansItalic
-StatusLabel.TextTransparency = 1
-StatusLabel.Parent = MainFrame
-
-local Credits = Instance.new("TextLabel")
-Credits.Size = UDim2.new(1, 0, 0, 20)
-Credits.Position = UDim2.new(0, 0, 1, -25)
-Credits.BackgroundTransparency = 1
-Credits.Text = "Created by yariksazonov124"
-Credits.TextColor3 = Color3.fromRGB(100, 100, 100)
-Credits.TextSize = 12
-Credits.Font = Enum.Font.SourceSans
-Credits.TextTransparency = 1
-Credits.Parent = MainFrame
-
-local OpenButton = Instance.new("TextButton")
-OpenButton.Size = UDim2.new(0, 80, 0, 40)
-OpenButton.Position = UDim2.new(0, 10, 0.5, -20)
-OpenButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-OpenButton.Text = "Infinix"
-OpenButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-OpenButton.TextSize = 16
-OpenButton.Font = Enum.Font.SourceSansBold
-OpenButton.Visible = false
-OpenButton.Parent = ScreenGui
-
-local OpenCorner = Instance.new("UICorner")
-OpenCorner.CornerRadius = UDim.new(0, 10)
-OpenCorner.Parent = OpenButton
-
-local OpenStroke = Instance.new("UIStroke")
-OpenStroke.Color = Color3.fromRGB(255, 0, 0)
-OpenStroke.Thickness = 2
-OpenStroke.Parent = OpenButton
-
-local currentVolume = 0.5
-
+local P,T,U=game:GetService("Players"),game:GetService("TweenService"),game:GetService("UserInputService")
+local LP=P.LocalPlayer local PG=LP:WaitForChild("PlayerGui")
+if PG:FindFirstChild("InfinixHub") then PG.InfinixHub:Destroy() end
+local SG,MF=Instance.new("ScreenGui"),Instance.new("Frame")
+SG.Name,SG.ResetOnSpawn,SG.Parent="InfinixHub",false,PG
+MF.Size,MF.Position,MF.BackgroundColor3,MF.BackgroundTransparency,MF.BorderSizePixel,MF.Parent=UDim2.new(0,350,0,290),UDim2.new(0.5,-175,0.5,-145),Color3.fromRGB(25,25,25),1,0,SG
+local C,S=Instance.new("UICorner"),Instance.new("UIStroke")
+C.CornerRadius,C.Parent=UDim.new(0,16),MF S.Color,S.Thickness,S.Transparency,S.Parent=Color3.fromRGB(255,0,0),2,1,MF
+local Tl,CB=Instance.new("TextLabel"),Instance.new("TextButton")
+Tl.Size,Tl.Position,Tl.BackgroundTransparency,Tl.Text,Tl.TextColor3,Tl.TextSize,Tl.Font,Tl.TextXAlignment,Tl.TextTransparency,Tl.Parent=UDim2.new(1,-50,0,40),UDim2.new(0,15,0,0),1,"Infinix Hub - Music Player",Color3.fromRGB(255,255,255),20,Enum.Font.SourceSansBold,Enum.TextXAlignment.Left,1,MF
+CB.Size,CB.Position,CB.BackgroundTransparency,CB.Text,CB.TextColor3,CB.TextSize,CB.Font,CB.TextTransparency,CB.Parent=UDim2.new(0,35,0,35),UDim2.new(1,-40,0,5),1,"✕",Color3.fromRGB(255,75,75),22,Enum.Font.SourceSansBold,1,MF
+local TB=Instance.new("TextBox")
+TB.Size,TB.Position,TB.BackgroundColor3,TB.BackgroundTransparency,TB.PlaceholderText,TB.PlaceholderColor3,TB.Text,TB.TextColor3,TB.TextSize,TB.Font,TB.TextTransparency,TB.Parent=UDim2.new(0,280,0,40),UDim2.new(0.5,-140,0,60),Color3.fromRGB(40,40,40),1,"Enter Audio ID or URL here...",Color3.fromRGB(150,150,150),"",Color3.fromRGB(255,255,255),16,Enum.Font.SourceSans,1,MF
+local TC=Instance.new("UICorner") TC.CornerRadius,TC.Parent=UDim.new(0,8),TB
+local BTN1,BTN2,BTN3=Instance.new("TextButton"),Instance.new("TextButton"),Instance.new("TextButton")
+BTN1.Size,BTN1.Position,BTN1.BackgroundColor3,BTN1.BackgroundTransparency,BTN1.Text,BTN1.TextColor3,BTN1.TextSize,BTN1.Font,BTN1.TextTransparency,BTN1.Parent=UDim2.new(0,90,0,45),UDim2.new(0.5,-140,0,115),Color3.fromRGB(35,35,35),1,"▶",Color3.fromRGB(255,255,255),24,Enum.Font.SourceSansBold,1,MF
+BTN2.Size,BTN2.Position,BTN2.BackgroundColor3,BTN2.BackgroundTransparency,BTN2.Text,BTN2.TextColor3,BTN2.TextSize,BTN2.Font,BTN2.TextTransparency,BTN2.Parent=UDim2.new(0,90,0,45),UDim2.new(0.5,-45,0,115),Color3.fromRGB(35,35,35),1,"⏸",Color3.fromRGB(255,255,255),20,Enum.Font.SourceSansBold,1,MF
+BTN3.Size,BTN3.Position,BTN3.BackgroundColor3,BTN3.BackgroundTransparency,BTN3.Text,BTN3.TextColor3,BTN3.TextSize,BTN3.Font,BTN3.TextTransparency,BTN3.Parent=UDim2.new(0,90,0,45),UDim2.new(0.5,50,0,115),Color3.fromRGB(35,35,35),1,"■",Color3.fromRGB(255,255,255),24,Enum.Font.SourceSansBold,1,MF
+local C1,C2,C3=Instance.new("UICorner"),Instance.new("UICorner"),Instance.new("UICorner")
+C1.CornerRadius,C1.Parent=UDim.new(0,12),BTN1 C2.CornerRadius,C2.Parent=UDim.new(0,12),BTN2 C3.CornerRadius,C3.Parent=UDim.new(0,12),BTN3
+local SF,SB,VL=Instance.new("Frame"),Instance.new("TextButton"),Instance.new("TextLabel")
+SF.Size,SF.Position,SF.BackgroundColor3,SF.BackgroundTransparency,SF.BorderSizePixel,SF.Parent=UDim2.new(0,200,0,6),UDim2.new(0.5,-60,0,185),Color3.fromRGB(60,60,60),1,0,MF
+local SC=Instance.new("UICorner") SC.CornerRadius,SC.Parent=UDim.new(0,3),SF
+SB.Size,SB.Position,SB.BackgroundColor3,SB.BackgroundTransparency,SB.Text,SB.Parent=UDim2.new(0,16,0,16),UDim2.new(0.5,-8,0.5,-8),Color3.fromRGB(255,0,0),1,"",SF
+local SBC=Instance.new("UICorner") SBC.CornerRadius,SBC.Parent=UDim.new(1,0),SB
+VL.Size,VL.Position,VL.BackgroundTransparency,VL.Text,VL.TextColor3,VL.TextSize,VL.Font,VL.TextXAlignment,VL.TextTransparency,VL.Parent=UDim2.new(0,80,0,20),UDim2.new(0.5,-145,0,178),1,"Vol: 50%",Color3.fromRGB(200,200,200),14,Enum.Font.SourceSansBold,Enum.TextXAlignment.Left,1,MF
+local SL,CR=Instance.new("TextLabel"),Instance.new("TextLabel")
+SL.Size,SL.Position,SL.BackgroundTransparency,SL.Text,SL.TextColor3,SL.TextSize,SL.Font,SL.TextTransparency,SL.Parent=UDim2.new(1,0,0,30),UDim2.new(0,0,0,220),1,"Status: Idle",Color3.fromRGB(180,180,180),16,Enum.Font.SourceSansItalic,1,MF
+CR.Size,CR.Position,CR.BackgroundTransparency,CR.Text,CR.TextColor3,CR.TextSize,CR.Font,CR.TextTransparency,CR.Parent=UDim2.new(1,0,0,20),UDim2.new(0,0,1,-25),1,"Created by yariksazonov124",Color3.fromRGB(100,100,100),12,Enum.Font.SourceSans,1,MF
+local OB,OBC,OBS=Instance.new("TextButton"),Instance.new("UICorner"),Instance.new("UIStroke")
+OB.Size,OB.Position,OB.BackgroundColor3,OB.Text,OB.TextColor3,OB.TextSize,OB.Font,OB.Visible,OB.Parent=UDim2.new(0,80,0,40),UDim2.new(0,10,0.5,-20),Color3.fromRGB(25,25,25),"Infinix",Color3.fromRGB(255,255,255),16,Enum.Font.SourceSansBold,false,SG
+OBC.CornerRadius,OBC.Parent=UDim.new(0,10),OB OBS.Color,OBS.Thickness,OBS.Parent=Color3.fromRGB(255,0,0),2,OB
+local cv,cs,cid=0.5,nil,nil
 local function fadeIn()
-    local tweenInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-    TweenService:Create(MainFrame, tweenInfo, {BackgroundTransparency = 0}):Play()
-    TweenService:Create(UIStroke, tweenInfo, {Transparency = 0}):Play()
-    TweenService:Create(Title, tweenInfo, {TextTransparency = 0}):Play()
-    TweenService:Create(CloseButton, tweenInfo, {TextTransparency = 0}):Play()
-    TweenService:Create(TextBox, tweenInfo, {BackgroundTransparency = 0, TextTransparency = 0}):Play()
-    TweenService:Create(PlayButton, tweenInfo, {BackgroundTransparency = 0, TextTransparency = 0}):Play()
-    TweenService:Create(PauseButton, tweenInfo, {BackgroundTransparency = 0, TextTransparency = 0}):Play()
-    TweenService:Create(StopButton, tweenInfo, {BackgroundTransparency = 0, TextTransparency = 0}):Play()
-    TweenService:Create(SliderFrame, tweenInfo, {BackgroundTransparency = 0}):Play()
-    TweenService:Create(SliderButton, tweenInfo, {BackgroundTransparency = 0}):Play()
-    TweenService:Create(VolumeLabel, tweenInfo, {TextTransparency = 0}):Play()
-    TweenService:Create(StatusLabel, tweenInfo, {TextTransparency = 0}):Play()
-    TweenService:Create(Credits, tweenInfo, {TextTransparency = 0}):Play()
+    local inf = TweenInfo.new(0.6,Enum.EasingStyle.Quart,Enum.EasingDirection.Out)
+    T:Create(MF,inf,{BackgroundTransparency=0}):Play() T:Create(S,inf,{Transparency=0}):Play() T:Create(Tl,inf,{TextTransparency=0}):Play()
+    T:Create(CB,inf,{TextTransparency=0}):Play() T:Create(TB,inf,{BackgroundTransparency=0,TextTransparency=0}):Play()
+    T:Create(BTN1,inf,{BackgroundTransparency=0,TextTransparency=0}):Play() T:Create(BTN2,inf,{BackgroundTransparency=0,TextTransparency=0}):Play()
+    T:Create(BTN3,inf,{BackgroundTransparency=0,TextTransparency=0}):Play() T:Create(SF,inf,{BackgroundTransparency=0}):Play()
+    T:Create(SB,inf,{BackgroundTransparency=0}):Play() T:Create(VL,inf,{TextTransparency=0}):Play() T:Create(SL,inf,{TextTransparency=0}):Play()
+    T:Create(CR,inf,{TextTransparency=0}):Play()
 end
-
 fadeIn()
-
-local currentSound = nil
-local currentID = nil
-
-local function cleanID(text)
-    local id = text:match("asset/%?id=(%d+)") or text:match("library/(%d+)") or text:match("(%d+)")
-    return id
+BTN1.MouseButton1Click:Connect(function()
+    local id = TB.Text:match("id=(%d+)") or TB.Text:match("library/(%d+)") or TB.Text:match("(%d+)")
+    if id then
+        if cs and cid==id then if not cs.IsPlaying then cs:Resume() SL.Text="Status: Playing ID "..id SL.TextColor3=Color3.fromRGB(0,255,128) end
+        else if cs then cs:Stop() cs:Destroy() end cid=id
+            local s=Instance.new("Sound") s.SoundId,s.Volume,s.Looped,s.Parent="rbxassetid://"..id,cv,true,workspace
+            cs=s cs:Play() SL.Text="Status: Playing ID "..id SL.TextColor3=Color3.fromRGB(0,255,128) end
+    else SL.Text,SL.TextColor3="Status: Invalid ID/Link!",Color3.fromRGB(255,100,100) end
+end)
+BTN2.MouseButton1Click:Connect(function() if cs and cs.IsPlaying then cs:Pause() SL.Text,SL.TextColor3="Status: Paused",Color3.fromRGB(255,200,0) end end)
+BTN3.MouseButton1Click:Connect(function() if cs then cs:Stop() cs:Destroy() cs,cid=nil,nil SL.Text,SL.TextColor3="Status: Stopped",Color3.fromRGB(180,180,180) else SL.Text,SL.TextColor3="Status: No active music",Color3.fromRGB(255,165,0) end end)
+local sliding = false
+local function updown(input)
+    local minX,maxX=SF.AbsolutePosition.X,SF.AbsolutePosition.X+SF.AbsoluteSize.X
+    local pct=math.clamp((input.Position.X-minX)/(maxX-minX),0,1) cv=pct
+    SB.Position=UDim2.new(pct,-8,0.5,-8) VL.Text="Vol: "..math.round(pct*100).."%" if cs then cs.Volume=cv end
 end
-
-PlayButton.MouseButton1Click:Connect(function()
-    local input = TextBox.Text
-    local audioID = cleanID(input)
-    
-    if audioID then
-        if currentSound and currentID == audioID then
-            if not currentSound.IsPlaying then
-                currentSound:Resume()
-                StatusLabel.Text = "Status: Playing ID " .. audioID
-                StatusLabel.TextColor3 = Color3.fromRGB(0, 255, 128)
-            end
-        else
-            if currentSound then
-                currentSound:Stop() -- Исправлено: Гарантированно глушим старый звук перед удалением
-                currentSound:Destroy()
-            end
-            
-            currentID = audioID
-            
-            -- Исправлено: Свойства настраиваются ДО указания Parent для оптимизации движка Roblox
-            local sound = Instance.new("Sound")
-            sound.SoundId = "rbxassetid://" .. audioID
-            sound.Volume = currentVolume
-            sound.Looped = true
-            sound.Parent = workspace
-            
-            currentSound = sound
-            currentSound:Play()
-            
-            StatusLabel.Text = "Status: Playing ID " .. audioID
-            StatusLabel.TextColor3 = Color3.fromRGB(0, 255, 128)
-        end
-    else
-        StatusLabel.Text = "Status: Invalid ID/Link!"
-        StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+SB.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 or i.UserInputType==Enum.UserInputType.Touch then sliding=true end end)
+U.InputEnded:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 or i.UserInputType==Enum.UserInputType.Touch then sliding=false end end)
+U.InputChanged:Connect(function(i) if sliding and (i.UserInputType==Enum.UserInputType.MouseMovement or i.UserInputType==Enum.UserInputType.Touch) then updown(i) end end)
+CB.MouseButton1Click:Connect(function()
+    local inf=TweenInfo.new(0.4,Enum.EasingStyle.Quart,Enum.EasingDirection.In)
+    T:Create(MF,inf,{BackgroundTransparency=1}):Play() T:Create(S,inf,{Transparency=1}):Play() T:Create(Tl,inf,{TextTransparency=1}):Play()
+    T:Create(CB,inf,{TextTransparency=1}):Play() T:Create(TB,inf,{BackgroundTransparency=1,TextTransparency=1}):Play()
+    T:Create(BTN1,inf,{BackgroundTransparency=1,TextTransparency=1}):Play() T:Create(BTN2,inf,{BackgroundTransparency=1,TextTransparency=1}):Play()
+    T:Create(BTN3,inf,{BackgroundTransparency=1,TextTransparency=1}):Play() T:Create(SF,inf,{BackgroundTransparency=1}):Play()
+    T:Create(SB,inf,{BackgroundTransparency=1}):Play() T:Create(VL,inf,{TextTransparency=1}):Play() T:Create(SL,inf,{TextTransparency=1}):Play()
+    local lt=T:Create(CR,inf,{TextTransparency=1}) lt:Play() lt.Completed:Connect(function() MF.Visible,OB.Visible=false,true end)
+end)
+OB.MouseButton1Click:Connect(function() OB.Visible,MF.Visible=false,true fadeIn() end)
+local drag,dInput,dStart,sPos
+MF.InputBegan:Connect(function(i)
+    if i.UserInputType==Enum.UserInputType.MouseButton1 or i.UserInputType==Enum.UserInputType.Touch then
+        drag,dStart,sPos=true,i.Position,MF.Position
+        i.Changed:Connect(function() if i.UserInputState==Enum.UserInputState.End then drag=false end end)
     end
 end)
-
-PauseButton.MouseButton1Click:Connect(function()
-    if currentSound and currentSound.IsPlaying then
-        currentSound:Pause()
-        StatusLabel.Text = "Status: Paused"
-        StatusLabel.TextColor3 = Color3.fromRGB(255, 200, 0)
-    end
+MF.InputChanged:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseMovement or i.UserInputType==Enum.UserInputType.Touch then dInput=i end end)
+U.InputChanged:Connect(function(i)
+    if i==dInput and drag then local d=i.Position-dStart MF.Position=UDim2.new(sPos.X.Scale,sPos.X.Offset+d.X,sPos.Y.Scale,sPos.Y.Offset+d.Y) end
+end)
