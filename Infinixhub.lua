@@ -27,7 +27,7 @@ local function createInfinixGui()
     titleLabel.Name = "TitleLabel"
     titleLabel.Size = UDim2.new(1, -40, 0, 40)
     titleLabel.Position = UDim2.new(0, 10, 0, 0)
-    titleLabel.Text = "Infinix gui"
+    titleLabel.Text = "Infinix hub"
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     titleLabel.TextSize = 18
     titleLabel.Font = Enum.Font.SourceSansBold
